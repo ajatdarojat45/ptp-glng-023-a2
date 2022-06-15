@@ -18,7 +18,7 @@ func (idb *InDB) CreateOrder(c *gin.Context){
 	if err := c.ShouldBindJSON(&req); err != nil {
 		fmt.Println("error found: ", err)
 		c.JSON(400, gin.H{
-			"message": "Bad Request",
+			"result": "Bad Request",
 		})
 		return
 	}
@@ -26,13 +26,13 @@ func (idb *InDB) CreateOrder(c *gin.Context){
 	errCreate := idb.DB.Create(&req).Error
 	if errCreate != nil {
 		c.JSON(500, gin.H{
-			"message": "internal server error",
+			"result": "internal server error",
 		})
 		return
 	}
 	
 	c.JSON(200, gin.H{
-		"message": "succesfully to create new data",
+		"result": "Data successfully created",
 	})
 }
 
@@ -64,7 +64,7 @@ func (idb *InDB) UpdateOrder(c *gin.Context){
 	if errConvert != nil {
 		fmt.Println("error found: ", errConvert)
 		c.JSON(400, gin.H{
-			"message": "params orderId is required",
+			"result": "params orderId is required",
 		})
 		return
 	}
@@ -73,7 +73,7 @@ func (idb *InDB) UpdateOrder(c *gin.Context){
 	errFind := idb.DB.First(&order, orderId).Error
 	if errFind != nil {
 		c.JSON(400, gin.H{
-			"message": "Data not found",
+			"result": "Data not found",
 		})
 		return
 	}
@@ -82,7 +82,7 @@ func (idb *InDB) UpdateOrder(c *gin.Context){
 	if err := c.ShouldBindJSON(&req); err != nil {
 		fmt.Println("error found: ", err)
 		c.JSON(400, gin.H{
-			"message": "Bad Request",
+			"result": "Bad Request",
 		})
 		return
 	}
@@ -90,13 +90,13 @@ func (idb *InDB) UpdateOrder(c *gin.Context){
 	errUpdate := idb.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(&req).Error
 	if errUpdate != nil {
 		c.JSON(500, gin.H{
-			"message": "internal server error",
+			"result": "internal server error",
 		})
 		return
 	}
 	
 	c.JSON(200, gin.H{
-		"message": "succesfully to update new data",
+		"result": "Data successfully updated",
 	})
 }
 
@@ -120,7 +120,7 @@ func (idb *InDB) DeleteOrder(c *gin.Context){
 			}
 		}else {
 			result = gin.H{
-				"result": "Data deleted successfully",
+				"result": "Data successfully deleted",
 			}
 		}
 	}
